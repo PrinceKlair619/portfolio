@@ -4,9 +4,9 @@ import pupperazziImg from "./assets/pupperazzi.png";
 import BC from "./assets/buffalo-crime.png";
 import media from "./assets/mediarater.png";
 import SuitPicture from "./assets/SuitPicture.png";
-import YoursTruly from "./assets/yourTruly.png";
 import yoga from "./assets/Yoga.png";
 import bookclub from "./assets/bookclub.png";
+import lettuce from "./assets/lettuce.png";
 import chat from "./assets/chat.png";
 
 // ── DATA ─────────────────────────────────────────────────────────────────────
@@ -50,6 +50,25 @@ const PROJECTS = [
   },
   {
     id: 3,
+    title: "Yodamart Lettuce",
+    subtitle: "Blockchain Marketplace",
+    period: "2025 – Present",
+    status: "In Progress",
+    image: lettuce,
+    imageLabel: "Yodamart Lettuce · Blockchain Marketplace",
+    github: "https://github.com/PrinceKlair619/Yodamart_lettuce",
+    live: null,
+    summary: "Decentralized marketplace smart contract for buying and selling lettuce with a custom Sepolia token and Web3 frontend.",
+    bullets: [
+      "Decentralized marketplace smart contract enabling users to buy and sell lettuce using a custom Sepolia-based token",
+      "Integrated smart contract with a frontend interface for seamless on-chain transactions and real-time Web3 interaction",
+      "Core blockchain features: wallet connection, transaction handling, and contract state management",
+      "Designed and tested contract logic for secure, reliable purchases and listings on the Ethereum testnet",
+    ],
+    tools: ["Solidity", "Sepolia", "JavaScript", "Web3", "Ethereum"],
+  },
+  {
+    id: 4,
     title: "Pupperazzi",
     subtitle: "Full-Stack Web Application",
     period: "Sept 2025 – Dec 2025",
@@ -67,7 +86,7 @@ const PROJECTS = [
     tools: ["React", "Vite", "PHP", "MySQL", "REST API"],
   },
   {
-    id: 4,
+    id: 5,
     title: "Chat Server & Client",
     subtitle: "C++ Socket Programming",
     period: "Sept 2025 – Nov 2025",
@@ -85,7 +104,7 @@ const PROJECTS = [
     tools: ["C++", "BSD Sockets", "TCP/IP", "Non-Blocking I/O", "select()"],
   },
   {
-    id: 5,
+    id: 6,
     title: "Cats of the Caribbean",
     subtitle: "Unreal Engine 5 Open-World Game",
     period: "Sept 2025 – Dec 2025",
@@ -103,7 +122,7 @@ const PROJECTS = [
     tools: ["Unreal Engine 5", "Blueprints", "C++", "Blender", "UMG", "Enhanced Input"],
   },
   {
-    id: 6,
+    id: 7,
     title: "Media Rater",
     subtitle: "Data Processing Backend",
     period: "Jan 2023 – Mar 2023",
@@ -121,7 +140,7 @@ const PROJECTS = [
     tools: ["Java", "Data Structures", "Algorithms", "CSV Processing"],
   },
   {
-    id: 7,
+    id: 8,
     title: "Buffalo Crime Analyzer",
     subtitle: "Data Visualization Web App",
     period: "Sept 2022 – Dec 2022",
@@ -145,7 +164,7 @@ const EXPERIENCE = [
     company: "Yours Truly Contracting",
     location: "Yonkers, NY",
     period: "Mar 2024 – Jul 2024",
-    image: YoursTruly,
+    image: null,
     imageLabel: "Yours Truly Contracting · Web Project",
     bullets: [
       "Designed and deployed a responsive client website that increased inquiries by 40% within 3 months.",
