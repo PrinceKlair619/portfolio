@@ -740,6 +740,7 @@ export default function App() {
               <a href="#projects" className="button primary">View Projects</a>
               <a href="https://github.com/PrinceKlair619" target="_blank" rel="noreferrer" className="button secondary">GitHub</a>
               <a href="https://linkedin.com/in/prince-k1" target="_blank" rel="noreferrer" className="button secondary">LinkedIn</a>
+              <a href="/resume.pdf" download="Prince_Klair_Resume.pdf" className="button secondary">Resume ↓</a>
             </div>
           </div>
 
