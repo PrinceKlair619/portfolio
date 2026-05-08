@@ -680,12 +680,18 @@ function ContactForm() {
 export default function App() {
   const [navScrolled, setNavScrolled] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
+  const [navOpen, setNavOpen] = useState(false);
 
   useEffect(() => {
-    const fn = () => setNavScrolled(window.scrollY > 24);
+    const fn = () => { setNavScrolled(window.scrollY > 24); setNavOpen(false); };
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = navOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [navOpen]);
 
   // Apply theme class to <html> so CSS variables cascade everywhere including body::before
   useEffect(() => {
@@ -706,7 +712,9 @@ export default function App() {
 
         {/* ── NAVBAR ── */}
         <nav className={`navbar${navScrolled ? " navbar-scrolled" : ""}`}>
-          <a href="#home" className="brand">Prince <span>Klair</span></a>
+          <a href="#home" className="brand" onClick={() => setNavOpen(false)}>Prince <span>Klair</span></a>
+
+          {/* Desktop links */}
           <div className="nav-links">
             <a href="#about">About</a>
             <a href="#projects">Projects</a>
@@ -722,7 +730,36 @@ export default function App() {
               <span className="theme-toggle-icon">{darkMode ? "☀" : "☾"}</span>
             </button>
           </div>
+
+          {/* Mobile: theme toggle + hamburger */}
+          <div className="nav-mobile-controls">
+            <button
+              className="theme-toggle"
+              onClick={handleThemeToggle}
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              title={darkMode ? "Light mode" : "Dark mode"}
+            >
+              <span className="theme-toggle-icon">{darkMode ? "☀" : "☾"}</span>
+            </button>
+            <button
+              className={`hamburger${navOpen ? " open" : ""}`}
+              onClick={() => setNavOpen((p) => !p)}
+              aria-label="Toggle navigation menu"
+              aria-expanded={navOpen}
+            >
+              <span /><span /><span />
+            </button>
+          </div>
         </nav>
+
+        {/* Mobile nav overlay */}
+        <div className={`mobile-nav${navOpen ? " open" : ""}`} aria-hidden={!navOpen}>
+          <a href="#about" onClick={() => setNavOpen(false)}>About</a>
+          <a href="#projects" onClick={() => setNavOpen(false)}>Projects</a>
+          <a href="#experience" onClick={() => setNavOpen(false)}>Experience</a>
+          <a href="#skills" onClick={() => setNavOpen(false)}>Skills</a>
+          <a href="#contact" onClick={() => setNavOpen(false)}>Contact</a>
+        </div>
 
         {/* ── HERO ── */}
         <section id="home" className="hero section">
