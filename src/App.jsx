@@ -212,7 +212,7 @@ const ROLES = [
   "Full-Stack Developer",
   "Systems Programmer",
   "Software Engineer",
-  "Builder of Real Products",
+  "AI/ML Engineer",
 ];
 
 // ── ANIMATED BACKGROUND ───────────────────────────────────────────────────────
@@ -764,7 +764,7 @@ export default function App() {
         {/* ── HERO ── */}
         <section id="home" className="hero section">
           <div className="hero-copy">
-            <p className="eyebrow">Computer Science · University at Buffalo</p>
+            <p className="eyebrow">CS Graduate · UB · Pursuing M.S. in AI at Pace University</p>
             <AnimatedName name="Prince Klair" />
             <TypewriterSubtitle />
             <p className="hero-summary">
@@ -784,8 +784,8 @@ export default function App() {
           <div className="hero-panel">
             <div className="hero-panel-label">Quick Snapshot</div>
             <ul>
-              <li>B.S. in Computer Science, University at Buffalo</li>
-              <li>Expected graduation: May 2026</li>
+              <li>B.S. in Computer Science, University at Buffalo — May 2026</li>
+              <li>Pursuing M.S. in Computer Science (AI) at Pace University</li>
               <li>Experience across web, systems, game dev, and data</li>
               <li>Interested in clean products with real-world impact</li>
             </ul>
@@ -808,7 +808,7 @@ export default function App() {
             </Reveal>
             <div className="about-text">
               <Reveal delay="reveal-delay-1">
-                <p>I'm a Computer Science student at the University at Buffalo focused on building software that is both technically strong and thoughtfully designed. My experience spans full-stack applications, backend systems, data visualization, socket-based networking, and game development.</p>
+                <p>I'm a Computer Science graduate from the University at Buffalo, now pursuing a Master's in Computer Science with a concentration in Artificial Intelligence at Pace University. My experience spans full-stack applications, backend systems, data visualization, socket-based networking, and game development.</p>
               </Reveal>
               <Reveal delay="reveal-delay-2">
                 <p>I enjoy taking projects from idea to implementation and making sure they feel polished, reliable, and user-friendly. I care a lot about structure, debugging, maintainability, and building things that feel complete rather than rushed.</p>
@@ -821,7 +821,8 @@ export default function App() {
                   {[
                     { label: "University", value: "University at Buffalo" },
                     { label: "Degree", value: "B.S. Computer Science" },
-                    { label: "Expected", value: "May 2026" },
+                    { label: "Graduated", value: "May 2026" },
+                    { label: "Pursuing", value: "M.S. CS — AI, Pace University" },
                     { label: "Location", value: "Yonkers, NY" },
                   ].map((item) => (
                     <div className="meta-item" key={item.label}>
@@ -949,7 +950,7 @@ export default function App() {
         {/* ── FOOTER ── */}
         <footer className="footer">
           <span>© 2025 Prince Klair</span>
-          <span>Built with React · University at Buffalo</span>
+          <span>Built with React · UB CS Graduate · Pursuing M.S. in AI</span>
         </footer>
 
       </div>
