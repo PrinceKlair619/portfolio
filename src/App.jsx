@@ -186,7 +186,7 @@ const EXPERIENCE = [
     ],
   },
   {
-    title: "Store Associate",
+    title: "Manager",
     company: "7 Days Gas and Food Mart",
     location: "New Rochelle, NY",
     period: "Jun 2021 – Present",
