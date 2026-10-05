@@ -160,42 +160,29 @@ const PROJECTS = [
 
 const EXPERIENCE = [
   {
-    title: "Freelance Web Developer",
+    title: "Web Developer & Digital Operations Lead",
     company: "Yours Truly Contracting",
     location: "Yonkers, NY",
-    period: "Mar 2024 – Jul 2024",
+    period: "Mar 2024 – Present",
     image: null,
     imageLabel: "Yours Truly Contracting · Web Project",
     bullets: [
-      "Designed and deployed a responsive client website that increased inquiries by 40% within 3 months.",
-      "Showcased 10+ projects, testimonials, and contracting services to strengthen customer trust.",
-      "Optimized navigation and UI layouts, reducing bounce rate by 25% during user testing.",
+      "Engineered and deployed 2 full redesigns of the company’s responsive website using HTML/CSS/JavaScript and a Node.js/npm build workflow, optimizing layout and performance for cross-device compatibility.",
+      "Maintained the production site across 30+ months of continuous operation, shipping ongoing content, layout, and feature updates through a version-controlled release process with custom domain and DNS configuration.",
+      "Managed the company’s Instagram presence and inbound inquiry pipeline, editing promotional video content and routing customer leads to the correct point of contact.",
     ],
   },
   {
-    title: "Passenger Services Agent",
-    company: "Swissport International",
-    location: "Jamaica, NY",
-    period: "Jun 2024 – Aug 2024",
-    image: null,
-    imageLabel: null,
-    bullets: [
-      "Directed boarding operations, coordinated gate changes, and ensured on-time departures.",
-      "Assisted passengers with flight information, delays, and general inquiries.",
-      "Processed passports and visas in compliance with international travel and customs regulations.",
-    ],
-  },
-  {
-    title: "Manager",
+    title: "Store Manager",
     company: "7 Days Gas and Food Mart",
     location: "New Rochelle, NY",
     period: "Jun 2021 – Present",
     image: null,
     imageLabel: null,
     bullets: [
-      "Resolved operational issues efficiently while providing consistent, high-quality customer service.",
-      "Maintained store organization, cleanliness, and safety standards to support daily operations.",
-      "Handled transactions, assisted customers, and supported inventory management tasks.",
+      "Maintained operational processes and customer-facing workflows in a fast-paced environment, consistently adapting to changing priorities and needs.",
+      "Demonstrated strong organizational skills and attention to detail through inventory management, transaction handling, and daily reporting.",
+      "Provided consistent, high-quality support to a diverse customer base — building communication skills applicable to end-user enablement and onboarding.",
     ],
   },
 ];
