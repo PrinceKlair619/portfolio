@@ -1,172 +1,126 @@
-/* ── BURNOUT LOADING SCREEN ── */
-.ls-root {
-  --p: 0;
-  --ls-bg: #4a4b50;
-  --ls-ink: #f2f2f0;
-  --ls-soft: #c4c4ca;
+/* ── LOADING SCREEN ── uses the page's tokens from App.css */
+.ls {
   position: fixed;
   inset: 0;
   z-index: 9999;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--ls-bg);
-  color: var(--ls-ink);
-  font-family: "Plus Jakarta Sans", sans-serif;
-  user-select: none;
-  transition: opacity 0.7s ease;
+  padding: 24px 16px;
+  background: var(--bg);
+  color: var(--text);
+  transition: opacity 0.5s ease;
 }
-.ls-out { opacity: 0; pointer-events: none; }
+.ls-leaving { opacity: 0; pointer-events: none; }
+
+.ls-mono { font-family: "DM Mono", monospace; }
+.ls-muted { color: var(--text-muted); }
+.ls-blue { color: var(--blue); }
+.ls-ok { color: #4caf82; }
 
 /* ── Skip ── */
 .ls-skip {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 24px;
+  right: 24px;
+  padding: 6px 4px;
   background: none;
   border: none;
-  padding: 6px 8px;
-  color: var(--ls-soft);
-  font: 500 14px "Plus Jakarta Sans", sans-serif;
+  font: 0.72rem "DM Mono", monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   cursor: pointer;
   transition: color 0.2s ease;
 }
 .ls-skip span { display: inline-block; margin-left: 4px; transition: transform 0.2s ease; }
 .ls-skip:hover,
-.ls-skip:focus-visible { color: var(--ls-ink); }
+.ls-skip:focus-visible { color: var(--text); }
 .ls-skip:hover span { transform: translateX(3px); }
-
-/* ── Tire + smoke ── */
-.ls-center {
-  width: min(320px, 100% - 32px);
-}
-
-.ls-burnout {
-  position: relative;
-  width: 100%;
-  height: 170px;
-}
-
-.ls-tire {
-  position: absolute;
-  right: 60px;
-  bottom: 12px;
-  width: 84px;
-  height: 84px;
-  z-index: 1;
-  overflow: visible;
-  animation: ls-shake 0.12s linear infinite;
-}
-.ls-tire-spin {
-  fill: none;
-  stroke: var(--ls-ink);
-  stroke-width: 6;
-  stroke-linecap: round;
-  transform-origin: 100px 100px;
-  animation: ls-spin 0.3s linear infinite;
-}
-.ls-tire-spin circle:first-child { fill: var(--ls-bg); }
-@keyframes ls-spin { to { transform: rotate(360deg); } }
-@keyframes ls-shake {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(-1px, 1px); }
-  50% { transform: translate(1px, 0); }
-  75% { transform: translate(0, -1px); }
-}
-
-.ls-ground {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 11px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35) 30%, rgba(255, 255, 255, 0.35) 70%, transparent);
-}
-
-/* Smoke grows with progress (--p). Anchored at the tire's contact patch. */
-.ls-smoke {
-  position: absolute;
-  right: 102px;
-  bottom: 12px;
-  width: 0;
-  height: 0;
-  transform-origin: 0 0;
-  transform: scale(calc(0.5 + var(--p) * 1.1));
-  opacity: calc(0.45 + var(--p) * 0.55);
-}
-.ls-smoke span {
-  position: absolute;
-  left: -40px;
-  top: -55px;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(250, 250, 252, 0.85) 0%, rgba(235, 235, 240, 0.55) 35%, rgba(220, 220, 228, 0) 68%);
-  opacity: 0;
-  animation: ls-puff 1.8s ease-out infinite;
-  animation-delay: calc(var(--i) * -0.1s);
-}
-.ls-smoke span:nth-child(odd) { animation-name: ls-puff-high; animation-duration: 2.2s; }
-.ls-smoke span:nth-child(3n) { animation-name: ls-puff-low; animation-duration: 1.5s; }
-
-@keyframes ls-puff {
-  0% { opacity: 0; transform: translate(10px, 10px) scale(0.4); }
-  12% { opacity: 1; }
-  70% { opacity: 0.8; }
-  100% { opacity: 0; transform: translate(-150px, -60px) scale(2.4); }
-}
-@keyframes ls-puff-high {
-  0% { opacity: 0; transform: translate(10px, 5px) scale(0.3); }
-  12% { opacity: 1; }
-  70% { opacity: 0.7; }
-  100% { opacity: 0; transform: translate(-110px, -110px) scale(2.1); }
-}
-@keyframes ls-puff-low {
-  0% { opacity: 0; transform: translate(10px, 12px) scale(0.4); }
-  12% { opacity: 1; }
-  70% { opacity: 0.8; }
-  100% { opacity: 0; transform: translate(-190px, -20px) scale(1.8); }
-}
-
-/* ── Bar ── */
-.ls-bar {
-  width: 100%;
-  height: 4px;
-  margin-top: 32px;
-  background: rgba(0, 0, 0, 0.22);
-}
-.ls-bar-fill {
-  height: 100%;
-  background: var(--ls-ink);
-}
-
-.ls-percent {
-  margin-top: 12px;
-  font-family: "DM Mono", monospace;
-  font-size: 14px;
-  color: var(--ls-soft);
-  font-variant-numeric: tabular-nums;
-}
 
 /* ── Hint ── */
 .ls-hint {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 24px 16px;
-  background: rgba(0, 0, 0, 0.2);
+  left: 16px;
+  right: 16px;
+  bottom: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
   text-align: center;
-  font-size: clamp(16px, 2.2vw, 20px);
-  line-height: 1.4;
-  color: var(--ls-ink);
+  font-size: 0.9rem;
+  color: var(--text-soft);
 }
-.ls-hint strong { font-weight: 700; }
+.ls-hint-label {
+  font: 0.68rem "DM Mono", monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
 
-@media (prefers-reduced-motion: reduce) {
-  .ls-tire,
-  .ls-smoke span { animation: none; }
-  .ls-smoke span { opacity: 0.6; }
-  .ls-tire-spin { animation-duration: 1.2s; }
+/* ── Option 1: name + line ── */
+.ls-name { width: min(360px, 100%); }
+.ls-name-title {
+  font-size: clamp(2.4rem, 7vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.ls-name-title span { color: var(--blue); }
+.ls-line {
+  height: 2px;
+  margin: 28px 0 10px;
+  background: var(--line-strong);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.ls-line div {
+  height: 100%;
+  background: var(--blue);
+  box-shadow: 0 0 12px var(--blue-glow);
+}
+.ls-name .ls-mono { font-size: 0.75rem; }
+
+/* ── Option 2: terminal ── */
+.ls-term {
+  width: min(420px, 100%);
+  font-size: 0.85rem;
+  line-height: 2;
+  color: var(--text-soft);
+}
+.ls-term > p:first-child { margin-bottom: 8px; }
+.ls-term-bar { margin-top: 8px; color: var(--text); white-space: pre; }
+
+/* ── Option 3: ring ── */
+.ls-ring {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: grid;
+  place-items: center;
+}
+.ls-ring svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+.ls-ring circle { fill: none; stroke-width: 3; }
+.ls-ring-track { stroke: var(--line-strong); }
+.ls-ring-fill {
+  stroke: var(--blue);
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px var(--blue-glow));
+}
+.ls-ring-mark {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.ls-ring-mark span { color: var(--blue); }
+.ls-ring-pct {
+  position: absolute;
+  top: calc(100% + 16px);
+  font-size: 0.75rem;
 }

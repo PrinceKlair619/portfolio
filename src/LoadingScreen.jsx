@@ -1,176 +1,131 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import "./LoadingScreen.css";
-
-// ── DATA ─────────────────────────────────────────────────────────────────────
 
 const HINTS = [
   "Braking is optional. Merge conflicts are not.",
-  "Pit stops are just code reviews with more tire changes.",
-  "You can't git push your way out of a gravel trap.",
   "Dark mode adds +5 horsepower.",
-  "Hold SHIFT to drift. It does nothing here, but it feels cool.",
   "On a loading screen, 99% always takes the longest.",
-  "Turning it off and on again restores 100% tire grip.",
-  "This loading bar is completely fake. The vibes are real.",
-  "Hiring Prince grants +15 team morale.",
+  "Pit stops are just code reviews with more tire changes.",
+  "Turning it off and on again fixes more than you'd think.",
+  "The Resume button is a shortcut. Recruiters love shortcuts.",
 ];
 
-const PUFFS = 18;
-const TREADS = 20;
+const STEPS = ["projects", "experience", "skills", "contact"];
 
-// Random total load time in ms (5–15s).
-const randomDuration = () => 5000 + Math.random() * 10000;
+// ── Variants: same progress/hint/skip, different centerpiece ──────────────────
 
-// Build a bumpy-but-monotonic progress curve: a handful of segments with
-// random durations and random progress gains, so the bar bursts and stalls
-// like a real loading screen while still landing on 100% at `total`.
-function buildCurve(total) {
-  const count = 6 + Math.floor(Math.random() * 4);
-  const times = Array.from({ length: count }, () => 0.4 + Math.random());
-  const gains = Array.from({ length: count }, () => Math.pow(Math.random(), 1.6) + 0.05);
-  const tSum = times.reduce((a, b) => a + b, 0);
-  const gSum = gains.reduce((a, b) => a + b, 0);
-  let t = 0;
-  let p = 0;
-  return times.map((tv, i) => {
-    const seg = { t0: t, p0: p, t1: t + (tv / tSum) * total, p1: p + (gains[i] / gSum) * 100 };
-    t = seg.t1;
-    p = seg.p1;
-    return seg;
-  });
-}
-
-function progressAt(curve, elapsed) {
-  const seg = curve.find((s) => elapsed < s.t1);
-  if (!seg) return 100;
-  const f = (elapsed - seg.t0) / (seg.t1 - seg.t0);
-  const eased = f < 0.5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2;
-  return seg.p0 + (seg.p1 - seg.p0) * eased;
-}
-
-// ── TIRE ─────────────────────────────────────────────────────────────────────
-
-function Tire() {
+function NameLoader({ progress }) {
   return (
-    <svg className="ls-tire" viewBox="0 0 200 200" aria-hidden="true">
-      <g className="ls-tire-spin">
-        <circle cx="100" cy="100" r="94" />
-        <circle cx="100" cy="100" r="78" />
-        {Array.from({ length: TREADS }, (_, i) => (
-          <line
-            key={i}
-            x1="100" y1="6" x2="100" y2="22"
-            transform={`rotate(${(360 / TREADS) * i} 100 100)`}
-          />
-        ))}
-        <circle cx="100" cy="100" r="54" />
-        {Array.from({ length: 5 }, (_, i) => (
-          <line
-            key={i}
-            x1="100" y1="86" x2="100" y2="50"
-            transform={`rotate(${72 * i} 100 100)`}
-          />
-        ))}
-        <circle cx="100" cy="100" r="14" />
-      </g>
-    </svg>
+    <div className="ls-name">
+      <p className="eyebrow">Loading portfolio</p>
+      <h1 className="ls-name-title">Prince <span>Klair</span></h1>
+      <div className="ls-line"><div style={{ width: `${progress}%` }} /></div>
+      <span className="ls-mono ls-muted">{Math.floor(progress)}%</span>
+    </div>
   );
 }
 
-// ── LOADING SCREEN ───────────────────────────────────────────────────────────
+function TerminalLoader({ progress }) {
+  const filled = Math.round(progress / 5);
+  return (
+    <div className="ls-term ls-mono">
+      <p><span className="ls-muted">{"< "}</span><span className="ls-blue">Prince Klair</span><span className="ls-muted">{" />"}</span></p>
+      {STEPS.map((step, i) => {
+        const at = ((i + 1) / (STEPS.length + 1)) * 100;
+        if (progress < at - 100 / (STEPS.length + 1)) return null;
+        return (
+          <p key={step}>
+            <span className="ls-muted">&gt;</span> loading {step}…{" "}
+            {progress >= at ? <span className="ls-ok">ok</span> : <span className="cursor-blink">_</span>}
+          </p>
+        );
+      })}
+      <p className="ls-term-bar">
+        [<span className="ls-blue">{"#".repeat(filled)}</span><span className="ls-muted">{".".repeat(20 - filled)}</span>] {Math.floor(progress)}%
+      </p>
+    </div>
+  );
+}
 
-/**
- * Burnout loading screen. Calls `onReveal` once loading hits 100% (so the
- * page can mount underneath), then fades out and removes itself.
- */
-export default function LoadingScreen({ onReveal }) {
-  const curve = useMemo(() => buildCurve(randomDuration()), []);
-  const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState("loading"); // loading → exit → done
+function RingLoader({ progress }) {
+  const r = 52;
+  const c = 2 * Math.PI * r;
+  return (
+    <div className="ls-ring">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r={r} className="ls-ring-track" />
+        <circle
+          cx="60" cy="60" r={r}
+          className="ls-ring-fill"
+          strokeDasharray={c}
+          strokeDashoffset={c * (1 - progress / 100)}
+        />
+      </svg>
+      <span className="ls-ring-mark">P<span>K</span></span>
+      <span className="ls-mono ls-muted ls-ring-pct">{Math.floor(progress)}%</span>
+    </div>
+  );
+}
+
+const VARIANTS = { name: NameLoader, terminal: TerminalLoader, ring: RingLoader };
+
+// ── Loading screen ────────────────────────────────────────────────────────────
+
+export default function LoadingScreen({ variant = "name", onDone }) {
+  const [duration] = useState(() => 5000 + Math.random() * 10000); // 5–15s
   const [hint] = useState(() => HINTS[Math.floor(Math.random() * HINTS.length)]);
-  const skipped = useRef(false);
+  const [progress, setProgress] = useState(0);
+  const [leaving, setLeaving] = useState(false);
 
-  const finish = useCallback(() => {
-    skipped.current = true;
-    setProgress(100);
-  }, []);
-
-  // Drive progress with rAF.
+  // Ease-out progress: quick start, slow finish.
   useEffect(() => {
+    if (leaving) return;
     let raf;
-    const t0 = performance.now();
+    const start = performance.now();
     const tick = (now) => {
-      if (skipped.current) return;
-      const p = progressAt(curve, now - t0);
-      setProgress(p);
-      if (p < 100) raf = requestAnimationFrame(tick);
+      const t = Math.min(1, (now - start) / duration);
+      setProgress(100 * (1 - Math.pow(1 - t, 2)));
+      if (t < 1) raf = requestAnimationFrame(tick);
+      else setLeaving(true);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [curve]);
+  }, [duration, leaving]);
 
-  // 100% → reveal the page and fade out.
+  // Fade out, then hand off to the page.
   useEffect(() => {
-    if (progress < 100 || phase !== "loading") return;
-    const t = setTimeout(() => { onReveal?.(); setPhase("exit"); }, 400);
+    if (!leaving) return;
+    const t = setTimeout(onDone, 500);
     return () => clearTimeout(t);
-  }, [progress, phase, onReveal]);
+  }, [leaving, onDone]);
 
   useEffect(() => {
-    if (phase !== "exit") return;
-    const t = setTimeout(() => setPhase("done"), 700);
-    return () => clearTimeout(t);
-  }, [phase]);
-
-  // Skip with Escape.
-  useEffect(() => {
-    if (phase !== "loading") return;
-    const onKey = (e) => { if (e.key === "Escape") finish(); };
+    const onKey = (e) => { if (e.key === "Escape") setLeaving(true); };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [phase, finish]);
+  }, []);
 
-  // Lock scroll while the overlay is up.
-  useEffect(() => {
-    if (phase === "done") return;
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
-  }, [phase]);
-
-  if (phase === "done") return null;
+  const Centerpiece = VARIANTS[variant] ?? NameLoader;
 
   return (
     <div
-      className={`ls-root${phase === "exit" ? " ls-out" : ""}`}
-      style={{ "--p": progress / 100 }}
+      className={`ls${leaving ? " ls-leaving" : ""}`}
       role="progressbar"
       aria-label="Loading portfolio"
+      aria-valuenow={Math.floor(progress)}
       aria-valuemin={0}
       aria-valuemax={100}
-      aria-valuenow={Math.round(progress)}
     >
-      {phase === "loading" && (
-        <button type="button" className="ls-skip" onClick={finish}>
-          Skip <span aria-hidden="true">→</span>
-        </button>
-      )}
+      <button type="button" className="ls-skip" onClick={() => setLeaving(true)}>
+        Skip <span aria-hidden="true">→</span>
+      </button>
 
-      <div className="ls-center">
-        <div className="ls-burnout">
-          <div className="ls-smoke" aria-hidden="true">
-            {Array.from({ length: PUFFS }, (_, i) => <span key={i} style={{ "--i": i }} />)}
-          </div>
-          <Tire />
-          <div className="ls-ground" />
-        </div>
-      </div>
+      <Centerpiece progress={leaving ? 100 : progress} />
 
-      <div className="ls-bar">
-        <div className="ls-bar-fill" style={{ width: `${progress}%` }} />
-      </div>
-      <span className="ls-percent">{Math.floor(progress)}%</span>
-
-      <p className="ls-hint"><strong>Hint:</strong> {hint}</p>
+      <p className="ls-hint">
+        <span className="ls-hint-label">Hint</span>
+        {hint}
+      </p>
     </div>
   );
 }
