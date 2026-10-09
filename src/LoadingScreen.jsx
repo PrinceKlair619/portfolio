@@ -10,31 +10,41 @@ const HINTS = [
   "The Resume button is a shortcut. Recruiters love shortcuts.",
 ];
 
+// Each step: what's running, and what it reports when done.
+// tone: "ok" (green), "warn" (amber), "err" (red)
 const STEPS = [
-  { name: "projects" },
-  { name: "experience" },
-  { name: "sleep schedule", error: "404 not found" },
-  { name: "skills" },
-  { name: "contact" },
+  { task: "booting portfolio.exe", result: "ok", tone: "ok" },
+  { task: "loading projects", result: "ok", tone: "ok" },
+  { task: "brewing coffee", result: "ok (3 cups)", tone: "ok" },
+  { task: "loading experience", result: "ok", tone: "ok" },
+  { task: "loading sleep schedule", result: "error: 404 not found", tone: "err" },
+  { task: "installing node_modules", result: "ok (4.2 GB)", tone: "ok" },
+  { task: "centering a div", result: "still trying…", tone: "warn" },
+  { task: "loading skills", result: "ok", tone: "ok" },
+  { task: "fixing bugs", result: "1 fixed, 3 created", tone: "warn" },
+  { task: "checking social life", result: "error: deprecated", tone: "err" },
+  { task: "loading resume", result: "ok", tone: "ok" },
+  { task: "loading contact", result: "ok", tone: "ok" },
 ];
 
 function TerminalLoader({ progress }) {
   const filled = Math.round(progress / 5);
+  const slot = 100 / (STEPS.length + 1);
   return (
     <div className="ls-term ls-mono">
-      <p><span className="ls-muted">{"< "}</span><span className="ls-blue">Prince Klair</span><span className="ls-muted">{" />"}</span></p>
+      <p>
+        <span className="ls-muted">{"< "}</span>test subject: <span className="ls-blue">Prince Klair</span>
+        <span className="ls-muted">{" />"}</span>
+      </p>
       {STEPS.map((step, i) => {
-        const at = ((i + 1) / (STEPS.length + 1)) * 100;
-        if (progress < at - 100 / (STEPS.length + 1)) return null;
-        let status = <span className="cursor-blink">_</span>;
-        if (progress >= at) {
-          status = step.error
-            ? <span className="ls-err">error: {step.error}</span>
-            : <span className="ls-ok">ok</span>;
-        }
+        const doneAt = (i + 1) * slot;
+        if (progress < doneAt - slot) return null;
         return (
-          <p key={step.name}>
-            <span className="ls-muted">&gt;</span> loading {step.name}…{" "}{status}
+          <p key={step.task}>
+            <span className="ls-muted">&gt;</span> {step.task}…{" "}
+            {progress >= doneAt
+              ? <span className={`ls-${step.tone}`}>{step.result}</span>
+              : <span className="cursor-blink">_</span>}
           </p>
         );
       })}

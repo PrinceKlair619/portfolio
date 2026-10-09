@@ -16,8 +16,12 @@
 .ls-mono { font-family: "DM Mono", monospace; }
 .ls-muted { color: var(--text-muted); }
 .ls-blue { color: var(--blue); }
+.ls-ok,
+.ls-warn,
+.ls-err { white-space: nowrap; }
 .ls-ok { color: #4caf82; }
-.ls-err { color: #e5534b; white-space: nowrap; }
+.ls-warn { color: #d9a43b; }
+.ls-err { color: #e5534b; }
 
 /* ── Skip ── */
 .ls-skip {
@@ -65,8 +69,12 @@
 .ls-term {
   width: min(460px, 100%);
   font-size: 0.85rem;
-  line-height: 2;
+  line-height: 1.85;
   color: var(--text-soft);
 }
 .ls-term > p:first-child { margin-bottom: 8px; }
 .ls-term-bar { margin-top: 8px; color: var(--text); white-space: pre; }
+
+@media (max-width: 420px) {
+  .ls-term { font-size: 0.74rem; }
+}
