@@ -17,6 +17,7 @@
 .ls-muted { color: var(--text-muted); }
 .ls-blue { color: var(--blue); }
 .ls-ok { color: #4caf82; }
+.ls-err { color: #e5534b; white-space: nowrap; }
 
 /* ── Skip ── */
 .ls-skip {
@@ -60,67 +61,12 @@
   color: var(--blue);
 }
 
-/* ── Option 1: name + line ── */
-.ls-name { width: min(360px, 100%); }
-.ls-name-title {
-  font-size: clamp(2.4rem, 7vw, 3.4rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1;
-}
-.ls-name-title span { color: var(--blue); }
-.ls-line {
-  height: 2px;
-  margin: 28px 0 10px;
-  background: var(--line-strong);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.ls-line div {
-  height: 100%;
-  background: var(--blue);
-  box-shadow: 0 0 12px var(--blue-glow);
-}
-.ls-name .ls-mono { font-size: 0.75rem; }
-
-/* ── Option 2: terminal ── */
+/* ── Terminal ── */
 .ls-term {
-  width: min(420px, 100%);
+  width: min(460px, 100%);
   font-size: 0.85rem;
   line-height: 2;
   color: var(--text-soft);
 }
 .ls-term > p:first-child { margin-bottom: 8px; }
 .ls-term-bar { margin-top: 8px; color: var(--text); white-space: pre; }
-
-/* ── Option 3: ring ── */
-.ls-ring {
-  position: relative;
-  width: 140px;
-  height: 140px;
-  display: grid;
-  place-items: center;
-}
-.ls-ring svg {
-  position: absolute;
-  inset: 0;
-  transform: rotate(-90deg);
-}
-.ls-ring circle { fill: none; stroke-width: 3; }
-.ls-ring-track { stroke: var(--line-strong); }
-.ls-ring-fill {
-  stroke: var(--blue);
-  stroke-linecap: round;
-  filter: drop-shadow(0 0 6px var(--blue-glow));
-}
-.ls-ring-mark {
-  font-size: 1.8rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-.ls-ring-mark span { color: var(--blue); }
-.ls-ring-pct {
-  position: absolute;
-  top: calc(100% + 16px);
-  font-size: 0.75rem;
-}

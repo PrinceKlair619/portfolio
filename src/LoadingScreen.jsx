@@ -10,20 +10,13 @@ const HINTS = [
   "The Resume button is a shortcut. Recruiters love shortcuts.",
 ];
 
-const STEPS = ["projects", "experience", "skills", "contact"];
-
-// ── Variants: same progress/hint/skip, different centerpiece ──────────────────
-
-function NameLoader({ progress }) {
-  return (
-    <div className="ls-name">
-      <p className="eyebrow">Loading portfolio</p>
-      <h1 className="ls-name-title">Prince <span>Klair</span></h1>
-      <div className="ls-line"><div style={{ width: `${progress}%` }} /></div>
-      <span className="ls-mono ls-muted">{Math.floor(progress)}%</span>
-    </div>
-  );
-}
+const STEPS = [
+  { name: "projects" },
+  { name: "experience" },
+  { name: "sleep schedule", error: "404 not found" },
+  { name: "skills" },
+  { name: "contact" },
+];
 
 function TerminalLoader({ progress }) {
   const filled = Math.round(progress / 5);
@@ -33,10 +26,15 @@ function TerminalLoader({ progress }) {
       {STEPS.map((step, i) => {
         const at = ((i + 1) / (STEPS.length + 1)) * 100;
         if (progress < at - 100 / (STEPS.length + 1)) return null;
+        let status = <span className="cursor-blink">_</span>;
+        if (progress >= at) {
+          status = step.error
+            ? <span className="ls-err">error: {step.error}</span>
+            : <span className="ls-ok">ok</span>;
+        }
         return (
-          <p key={step}>
-            <span className="ls-muted">&gt;</span> loading {step}…{" "}
-            {progress >= at ? <span className="ls-ok">ok</span> : <span className="cursor-blink">_</span>}
+          <p key={step.name}>
+            <span className="ls-muted">&gt;</span> loading {step.name}…{" "}{status}
           </p>
         );
       })}
@@ -47,31 +45,9 @@ function TerminalLoader({ progress }) {
   );
 }
 
-function RingLoader({ progress }) {
-  const r = 52;
-  const c = 2 * Math.PI * r;
-  return (
-    <div className="ls-ring">
-      <svg viewBox="0 0 120 120" aria-hidden="true">
-        <circle cx="60" cy="60" r={r} className="ls-ring-track" />
-        <circle
-          cx="60" cy="60" r={r}
-          className="ls-ring-fill"
-          strokeDasharray={c}
-          strokeDashoffset={c * (1 - progress / 100)}
-        />
-      </svg>
-      <span className="ls-ring-mark">P<span>K</span></span>
-      <span className="ls-mono ls-muted ls-ring-pct">{Math.floor(progress)}%</span>
-    </div>
-  );
-}
-
-const VARIANTS = { name: NameLoader, terminal: TerminalLoader, ring: RingLoader };
-
 // ── Loading screen ────────────────────────────────────────────────────────────
 
-export default function LoadingScreen({ variant = "name", onDone }) {
+export default function LoadingScreen({ onDone }) {
   const [duration] = useState(() => 5000 + Math.random() * 10000); // 5–15s
   const [hint] = useState(() => HINTS[Math.floor(Math.random() * HINTS.length)]);
   const [progress, setProgress] = useState(0);
@@ -105,8 +81,6 @@ export default function LoadingScreen({ variant = "name", onDone }) {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const Centerpiece = VARIANTS[variant] ?? NameLoader;
-
   return (
     <div
       className={`ls${leaving ? " ls-leaving" : ""}`}
@@ -120,7 +94,7 @@ export default function LoadingScreen({ variant = "name", onDone }) {
         Skip <span aria-hidden="true">→</span>
       </button>
 
-      <Centerpiece progress={leaving ? 100 : progress} />
+      <TerminalLoader progress={leaving ? 100 : progress} />
 
       <p className="ls-hint">
         <span className="ls-hint-label">Hint</span>
