@@ -1,6 +1,9 @@
 /* ── BURNOUT LOADING SCREEN ── */
 .ls-root {
   --p: 0;
+  --ls-bg: #4a4b50;
+  --ls-ink: #f2f2f0;
+  --ls-soft: #c4c4ca;
   position: fixed;
   inset: 0;
   z-index: 9999;
@@ -8,9 +11,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
-  background: #000;
-  color: #f0f0ef;
+  background: var(--ls-bg);
+  color: var(--ls-ink);
   font-family: "Plus Jakarta Sans", sans-serif;
   user-select: none;
   transition: opacity 0.7s ease;
@@ -25,43 +27,46 @@
   background: none;
   border: none;
   padding: 6px 8px;
-  color: #6a6a74;
-  font: 500 13px "Plus Jakarta Sans", sans-serif;
+  color: var(--ls-soft);
+  font: 500 14px "Plus Jakarta Sans", sans-serif;
   cursor: pointer;
   transition: color 0.2s ease;
 }
 .ls-skip span { display: inline-block; margin-left: 4px; transition: transform 0.2s ease; }
 .ls-skip:hover,
-.ls-skip:focus-visible { color: #f0f0ef; }
+.ls-skip:focus-visible { color: var(--ls-ink); }
 .ls-skip:hover span { transform: translateX(3px); }
 
 /* ── Tire + smoke ── */
 .ls-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: min(320px, 100%);
+  width: min(320px, 100% - 32px);
 }
 
 .ls-burnout {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 170px;
 }
 
 .ls-tire {
   position: absolute;
-  right: 40px;
+  right: 60px;
   bottom: 12px;
-  width: 140px;
-  height: 140px;
+  width: 84px;
+  height: 84px;
   z-index: 1;
+  overflow: visible;
   animation: ls-shake 0.12s linear infinite;
 }
 .ls-tire-spin {
+  fill: none;
+  stroke: var(--ls-ink);
+  stroke-width: 6;
+  stroke-linecap: round;
   transform-origin: 100px 100px;
   animation: ls-spin 0.3s linear infinite;
 }
+.ls-tire-spin circle:first-child { fill: var(--ls-bg); }
 @keyframes ls-spin { to { transform: rotate(360deg); } }
 @keyframes ls-shake {
   0%, 100% { transform: translate(0, 0); }
@@ -75,78 +80,93 @@
   left: 0;
   right: 0;
   bottom: 11px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #2a2a30 30%, #2a2a30 70%, transparent);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35) 30%, rgba(255, 255, 255, 0.35) 70%, transparent);
 }
 
 /* Smoke grows with progress (--p). Anchored at the tire's contact patch. */
 .ls-smoke {
   position: absolute;
-  right: 110px;
+  right: 102px;
   bottom: 12px;
   width: 0;
   height: 0;
   transform-origin: 0 0;
-  transform: scale(calc(0.35 + var(--p) * 1.65));
-  opacity: calc(0.25 + var(--p) * 0.75);
+  transform: scale(calc(0.5 + var(--p) * 1.1));
+  opacity: calc(0.45 + var(--p) * 0.55);
 }
 .ls-smoke span {
   position: absolute;
-  left: -30px;
-  top: -40px;
-  width: 60px;
-  height: 60px;
+  left: -40px;
+  top: -55px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(200, 200, 205, 0.45) 0%, rgba(160, 160, 168, 0.18) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(250, 250, 252, 0.85) 0%, rgba(235, 235, 240, 0.55) 35%, rgba(220, 220, 228, 0) 68%);
   opacity: 0;
   animation: ls-puff 1.8s ease-out infinite;
-  animation-delay: calc(var(--i) * -0.15s);
+  animation-delay: calc(var(--i) * -0.1s);
 }
-.ls-smoke span:nth-child(odd) { animation-duration: 2.2s; }
-.ls-smoke span:nth-child(3n) { animation-duration: 1.5s; }
+.ls-smoke span:nth-child(odd) { animation-name: ls-puff-high; animation-duration: 2.2s; }
+.ls-smoke span:nth-child(3n) { animation-name: ls-puff-low; animation-duration: 1.5s; }
 
 @keyframes ls-puff {
-  0% { opacity: 0; transform: translate(10px, 10px) scale(0.3); }
-  15% { opacity: 1; }
-  100% { opacity: 0; transform: translate(-150px, -70px) scale(2.6); }
+  0% { opacity: 0; transform: translate(10px, 10px) scale(0.4); }
+  12% { opacity: 1; }
+  70% { opacity: 0.8; }
+  100% { opacity: 0; transform: translate(-150px, -60px) scale(2.4); }
+}
+@keyframes ls-puff-high {
+  0% { opacity: 0; transform: translate(10px, 5px) scale(0.3); }
+  12% { opacity: 1; }
+  70% { opacity: 0.7; }
+  100% { opacity: 0; transform: translate(-110px, -110px) scale(2.1); }
+}
+@keyframes ls-puff-low {
+  0% { opacity: 0; transform: translate(10px, 12px) scale(0.4); }
+  12% { opacity: 1; }
+  70% { opacity: 0.8; }
+  100% { opacity: 0; transform: translate(-190px, -20px) scale(1.8); }
 }
 
 /* ── Bar ── */
 .ls-bar {
   width: 100%;
-  height: 2px;
-  margin-top: 28px;
-  background: #1a1a1e;
-  border-radius: 2px;
-  overflow: hidden;
+  height: 4px;
+  margin-top: 32px;
+  background: rgba(0, 0, 0, 0.22);
 }
 .ls-bar-fill {
   height: 100%;
-  background: #f0f0ef;
+  background: var(--ls-ink);
 }
 
 .ls-percent {
-  margin-top: 10px;
+  margin-top: 12px;
   font-family: "DM Mono", monospace;
-  font-size: 12px;
-  color: #6a6a74;
+  font-size: 14px;
+  color: var(--ls-soft);
   font-variant-numeric: tabular-nums;
 }
 
 /* ── Hint ── */
 .ls-hint {
   position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 28px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px 16px;
+  background: rgba(0, 0, 0, 0.2);
   text-align: center;
-  font-size: 13px;
-  color: #6a6a74;
+  font-size: clamp(16px, 2.2vw, 20px);
+  line-height: 1.4;
+  color: var(--ls-ink);
 }
+.ls-hint strong { font-weight: 700; }
 
 @media (prefers-reduced-motion: reduce) {
   .ls-tire,
   .ls-smoke span { animation: none; }
-  .ls-smoke span { opacity: 0.4; }
+  .ls-smoke span { opacity: 0.6; }
   .ls-tire-spin { animation-duration: 1.2s; }
 }

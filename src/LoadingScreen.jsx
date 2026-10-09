@@ -15,8 +15,8 @@ const HINTS = [
   "Hiring Prince grants +15 team morale.",
 ];
 
-const PUFFS = 12;
-const TREADS = 24;
+const PUFFS = 18;
+const TREADS = 20;
 
 // Random total load time in ms (5–15s).
 const randomDuration = () => 5000 + Math.random() * 10000;
@@ -54,27 +54,24 @@ function Tire() {
   return (
     <svg className="ls-tire" viewBox="0 0 200 200" aria-hidden="true">
       <g className="ls-tire-spin">
-        <circle cx="100" cy="100" r="96" fill="#111" />
+        <circle cx="100" cy="100" r="94" />
+        <circle cx="100" cy="100" r="78" />
         {Array.from({ length: TREADS }, (_, i) => (
-          <rect
+          <line
             key={i}
-            x="94" y="4" width="12" height="14" rx="2"
-            fill="#1f1f1f"
+            x1="100" y1="6" x2="100" y2="22"
             transform={`rotate(${(360 / TREADS) * i} 100 100)`}
           />
         ))}
-        <circle cx="100" cy="100" r="72" fill="#161616" stroke="#242424" strokeWidth="2" />
-        <circle cx="100" cy="100" r="56" fill="#2a2a2e" stroke="#4a4a52" strokeWidth="3" />
+        <circle cx="100" cy="100" r="54" />
         {Array.from({ length: 5 }, (_, i) => (
-          <path
+          <line
             key={i}
-            d="M92 98 L96 50 L104 50 L108 98 Z"
-            fill="#8a8a94"
+            x1="100" y1="86" x2="100" y2="50"
             transform={`rotate(${72 * i} 100 100)`}
           />
         ))}
-        <circle cx="100" cy="100" r="14" fill="#9a9aa4" />
-        <circle cx="100" cy="100" r="5" fill="#2a2a2e" />
+        <circle cx="100" cy="100" r="14" />
       </g>
     </svg>
   );
@@ -166,14 +163,14 @@ export default function LoadingScreen({ onReveal }) {
           <Tire />
           <div className="ls-ground" />
         </div>
-
-        <div className="ls-bar">
-          <div className="ls-bar-fill" style={{ width: `${progress}%` }} />
-        </div>
-        <span className="ls-percent">{Math.floor(progress)}%</span>
       </div>
 
-      <p className="ls-hint">Hint: {hint}</p>
+      <div className="ls-bar">
+        <div className="ls-bar-fill" style={{ width: `${progress}%` }} />
+      </div>
+      <span className="ls-percent">{Math.floor(progress)}%</span>
+
+      <p className="ls-hint"><strong>Hint:</strong> {hint}</p>
     </div>
   );
 }
